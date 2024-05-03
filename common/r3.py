@@ -1,4 +1,4 @@
-from math import sin, cos
+from math import sin, cos, sqrt
 
 
 class R3:
@@ -45,6 +45,9 @@ class R3:
     # x**2 + y**2 + z**2 > 1
     def isgood(self):
         return self.x**2 + self.y**2 + self.z**2 > 1
+
+    def length(self):
+        return sqrt(self.x**2 + self.y**2 + self.z**2)
 
 
 if __name__ == "__main__":  # pragma: no cover

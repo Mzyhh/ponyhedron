@@ -159,6 +159,29 @@ class Polyedr:
                     # задание самой грани
                     self.facets.append(Facet(vertexes))
 
+    # Удаление дубликатов рёбер
+    def edges_uniq(self):
+        edges = []
+        for e in self.edges:
+            include = False
+            for d in edges:
+                if ((d.beg == e.beg and d.fin == e.fin) or
+                        (d.beg == e.fin and d.fin == e.beg)):
+                    include = True
+                    break
+            if not include:
+                edges.append(e)
+        self.edges = edges
+
+    def good_edges(self):
+        return [e for e in self.edges if e.beg.isgood() or e.fin.isgood()]
+
+    def kekl(self):
+        self.edges_uniq()
+        proj_sum = 0
+        for e in self.edges:
+            proj_sum += 1
+
     # Метод изображения полиэдра
     def draw(self, tk):  # pragma: no cover
         tk.clean()
