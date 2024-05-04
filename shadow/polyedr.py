@@ -127,7 +127,7 @@ class Polyedr:
 
         # списки вершин, рёбер и граней полиэдра
         self.vertexes, self.edges, self.facets = [], [], []
-
+        
         # список строк файла
         with open(file) as f:
             for i, line in enumerate(f):
@@ -135,9 +135,10 @@ class Polyedr:
                     # обрабатываем первую строку; buf - вспомогательный массив
                     buf = line.split()
                     # коэффициент гомотетии
-                    c = float(buf.pop(0))
+                    self.c = float(buf.pop(0))
                     # углы Эйлера, определяющие вращение
-                    alpha, beta, gamma = (float(x) * pi / 180.0 for x in buf)
+                    self.alpha, self.beta, self.gamma = \
+                        (float(x) * pi / 180.0 for x in buf)
                 elif i == 1:
                     # во второй строке число вершин, граней и рёбер полиэдра
                     nv, nf, ne = (int(x) for x in line.split())
@@ -145,7 +146,7 @@ class Polyedr:
                     # задание всех вершин полиэдра
                     x, y, z = (float(x) for x in line.split())
                     self.vertexes.append(R3(x, y, z).rz(
-                        alpha).ry(beta).rz(gamma) * c)
+                        self.alpha).ry(self.beta).rz(self.gamma) * self.c)
                 else:
                     # вспомогательный массив
                     buf = line.split()
@@ -172,15 +173,23 @@ class Polyedr:
             if not include:
                 edges.append(e)
         self.edges = edges
+        
+    def undo_point(self, v):
+        v *= 1/self.c
+        v = v.rz(-self.gamma).ry(-self.beta).rz(-self.alpha)
+        return v
 
-    def good_edges(self):
-        return [e for e in self.edges if e.beg.isgood() or e.fin.isgood()]
-
-    def kekl(self):
+    def good_length(self):
         self.edges_uniq()
         proj_sum = 0
         for e in self.edges:
-            proj_sum += 1
+            if e.beg.isgood() or e.fin.isgood():
+                a = self.undo_point(e.beg)
+                b = self.undo_point(e.fin)
+                a = R3(a.x, a.y, 0)
+                b = R3(b.x, b.y, 0)
+                proj_sum += (a - b).length()
+        return proj_sum
 
     # Метод изображения полиэдра
     def draw(self, tk):  # pragma: no cover

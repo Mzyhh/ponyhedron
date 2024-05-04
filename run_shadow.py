@@ -11,9 +11,11 @@ try:
         print("=============================================================")
         print(f"Начало работы с полиэдром '{name}'")
         start_time = time()
-        Polyedr(f"data/{name}.geom").draw(tk)
+        p = Polyedr(f"data/{name}.geom")
+        p.draw(tk)
         delta_time = time() - start_time
         print(f"Изображение полиэдра '{name}' заняло {delta_time} сек.")
+        print(f"Сумма длин проекций \"хороших\" рёбер {p.good_length()}")
         input("Hit 'Return' to continue -> ")
 except (EOFError, KeyboardInterrupt):
     print("\nStop")
