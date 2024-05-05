@@ -183,9 +183,9 @@ class Polyedr:
         self.edges_uniq()
         proj_sum = 0
         for e in self.edges:
-            if e.beg.isgood() or e.fin.isgood():
-                a = self.undo_point(e.beg)
-                b = self.undo_point(e.fin)
+            a = self.undo_point(e.beg)
+            b = self.undo_point(e.fin)
+            if a.isgood() or b.isgood():
                 a = R3(a.x, a.y, 0)
                 b = R3(b.x, b.y, 0)
                 proj_sum += (a - b).length()
