@@ -5,6 +5,7 @@ from shadow.polyedr import Polyedr
 from tests.matchers import R3ApproxMatcher
 from common.r3 import R3
 
+
 class TestPolyedr(unittest.TestCase):
 
     @classmethod
@@ -34,23 +35,23 @@ class TestPolyedr(unittest.TestCase):
 
     def test_num_facets(self):
         self.assertEqual(len(self.polyedr.facets), 4)
-    
+
     def test_undo_point1(self):
         v = self.polyedr.undo_point(self.polyedr.vertexes[0])
         self.assertAlmostEqual(R3ApproxMatcher(v), R3(-0.5, -0.5, 0.5))
-        
+
     def test_undo_point2(self):
         v = self.polyedr.undo_point(self.polyedr.vertexes[1])
         self.assertAlmostEqual(R3ApproxMatcher(v), R3(-0.5, 0.5, 0.5))
-        
+
     def test_edges_uniq(self):
         p = self.polyedr
         p.edges_uniq()
         self.assertEqual(len(p.edges), 12)
-    
+
     def test_good_length1(self):
         self.assertAlmostEqual(self.polyedr.good_length(), 0.)
-        
+
     def test_good_length2(self):
         fake_file_content = """200.0	45.0	45.0	30.0
 8	4	16
@@ -71,5 +72,5 @@ class TestPolyedr(unittest.TestCase):
                    new=mock_open(read_data=fake_file_content)) as _file:
             p = Polyedr(fake_file_path)
             _file.assert_called_once_with(fake_file_path)
-        
+
         self.assertAlmostEqual(p.good_length(), 16.0)

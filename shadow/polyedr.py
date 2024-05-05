@@ -127,7 +127,7 @@ class Polyedr:
 
         # списки вершин, рёбер и граней полиэдра
         self.vertexes, self.edges, self.facets = [], [], []
-        
+
         # список строк файла
         with open(file) as f:
             for i, line in enumerate(f):
@@ -173,7 +173,7 @@ class Polyedr:
             if not include:
                 edges.append(e)
         self.edges = edges
-        
+
     def undo_point(self, v):
         v *= 1/self.c
         v = v.rz(-self.gamma).ry(-self.beta).rz(-self.alpha)
