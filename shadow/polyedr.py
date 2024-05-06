@@ -181,7 +181,7 @@ class Polyedr:
 
     def good_length(self):
         self.edges_uniq()
-        proj_sum = 0
+        proj_sum = 0.0
         for e in self.edges:
             a = self.undo_point(e.beg)
             b = self.undo_point(e.fin)
