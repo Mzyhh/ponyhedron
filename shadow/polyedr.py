@@ -186,8 +186,8 @@ class Polyedr:
             a = self.undo_point(e.beg)
             b = self.undo_point(e.fin)
             if a.isgood() or b.isgood():
-                a = R3(a.x, a.y, 0)
-                b = R3(b.x, b.y, 0)
+                a = R3(a.x, a.y, 0.0)
+                b = R3(b.x, b.y, 0.0)
                 proj_sum += (a - b).length()
         return proj_sum
 
